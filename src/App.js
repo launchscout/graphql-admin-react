@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import { connect } from 'react-redux';
 import { fetchSchemaAction } from './actions/fetchSchema';
-import { extractQueries } from './graphql_utils';
+import { extractQueries, findMutations } from './graphql_utils';
 import { getSchema } from './reducers';
 
 class App extends Component {
@@ -22,9 +22,16 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        Queries
         <ul>
         { this.props.queries.map( (query) => (
           <li><Link to={`/query/${query.name}`}>{query.name}</Link></li>
+        ))}
+        </ul>
+        Mutations
+        <ul>
+        { this.props.mutations.map( (mutation) => (
+          <li><Link to={`/mutation/${mutation.name}`}>{mutation.name}</Link></li>
         ))}
         </ul>
       </div>
@@ -35,7 +42,8 @@ class App extends Component {
 const mapStateToProps = (state) => {
   const schema = getSchema(state);
   return {
-    queries: schema ? extractQueries(schema) : []
+    queries: schema ? extractQueries(schema) : [],
+    mutations: schema ? findMutations(schema) : []
   }
 };
 

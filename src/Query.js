@@ -5,7 +5,7 @@ import { executeQueryAction } from './actions/executeQuery';
 import { getSchema, getQueryResult } from './reducers';
 import QueryResultsTable from './QueryResultTable';
 import QueryResult from './QueryResult';
-import QueryArgsForm from './QueryArgsForm';
+import QueryArgsForm from './ArgsForm';
 
 const displayQueryResult = (queryField, queryResult) => {
   if (isListQuery(queryField)) {
@@ -20,7 +20,7 @@ const Query = ({params, queryType, queryField, executeQuery, queryResult}) => {
     <div>
     <h3>{params.queryName}</h3>
     { queryType.name }
-    <QueryArgsForm queryArgs={queryField.args} onExecute={executeQuery} />
+    <QueryArgsForm args={queryField.args} onExecute={executeQuery} buttonLabel="Execute Query"/>
     <ul>
       { queryType.fields.map(field => <li>{field.name}</li>)}
     </ul>

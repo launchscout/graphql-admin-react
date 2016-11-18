@@ -10,7 +10,22 @@ export const extractQueries = (schema) => {
   return queryType.fields;
 };
 
+export const findMutations = (schema) => {
+  const mutationType = findType(schema, schema.mutationType.name);
+  return mutationType.fields;
+};
+
+export const findMutationField = (schema, name) => {
+  return findMutations(schema).find(field => field.name === name);
+};
+
+export const findMutationType = (schema, name) => {
+  return findType(schema, findMutationField(schema, name).type.name);
+}
+
 export const isListQuery = (queryField) => queryField.type.kind === "LIST";
+
+export const findField = (type, name) => type.fields.find(field => field.name == name);
 
 export const findQueryField = (schema, name) => {
   const queries = extractQueries(schema);
@@ -53,6 +68,17 @@ export const buildQuery = (schema, queryName, args) => {
   query doIt${declareArgumentVariables(queryArgs, args)} {
     ${queryName}${argumentVariables(queryArgs, args)} {
       ${findQueryType(schema, queryName).fields.filter(isScalar).map(field => field.name).join(", ")}
+    }
+  }
+  `;
+}
+
+export const buildMutation = (schema, mutationName, args) => {
+  const mutationArgs = findMutationField(schema, mutationName).args;
+  return gql`
+  mutation doIt${declareArgumentVariables(mutationArgs, args)} {
+    ${mutationName}${argumentVariables(mutationArgs, args)} {
+      ${findMutationType(schema, mutationName).fields.filter(isScalar).map(field => field.name).join(", ")}
     }
   }
   `;
