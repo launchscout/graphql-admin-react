@@ -19,11 +19,7 @@ const Query = ({params, queryType, queryField, executeQuery, queryResult}) => {
   return (
     <div>
     <h3>{params.queryName}</h3>
-    { queryType.name }
     <QueryArgsForm args={queryField.args} onExecute={executeQuery} buttonLabel="Execute Query"/>
-    <ul>
-      { queryType.fields.map(field => <li>{field.name}</li>)}
-    </ul>
     { queryResult ? displayQueryResult(queryField, queryResult) : '' }
     </div>
   );
