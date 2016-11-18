@@ -3,6 +3,7 @@ import { getSchema } from '../reducers';
 import { buildQuery } from '../graphql_utils';
 
 export const queryExecutedAction = createAction('queryExecuted');
+export const clearQueryResultAction = createAction('clear query result');
 
 export const executeQueryAction = (queryName, args) => {
   console.log('executing query' + queryName);
