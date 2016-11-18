@@ -5,6 +5,7 @@ import './App.css';
 import { connect } from 'react-redux';
 import { fetchSchemaAction } from './actions/fetchSchema';
 import { extractQueries } from './graphql_utils';
+import { getSchema } from './reducers';
 
 class App extends Component {
 
@@ -32,8 +33,9 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const schema = getSchema(state);
   return {
-    queries: extractQueries(state)
+    queries: schema ? extractQueries(schema) : []
   }
 };
 
