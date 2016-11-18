@@ -10,11 +10,18 @@ const displayResult = (queryField, queryResult) => {
   return <QueryResult result={queryResult} />;
 };
 
-const Mutation = ({params, mutationResultType, mutationField, executeMutation, mutationResult}) => {
+const Mutation = ({
+  params,
+  schema,
+  mutationResultType,
+  mutationField,
+  executeMutation,
+  mutationResult
+}) => {
   return (
     <div>
     <h3>{params.mutationName}</h3>
-    <ArgsForm args={mutationField.args} onExecute={executeMutation} buttonLabel="Execute Mutation"/>
+    <ArgsForm schema={schema} args={mutationField.args} onExecute={executeMutation} buttonLabel="Execute Mutation"/>
     { mutationResult ? displayResult(mutationField, mutationResult) : '' }
     </div>
   );
@@ -24,7 +31,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     mutationField: findMutationField(getSchema(state), ownProps.params.mutationName),
     mutationType: findMutationType(getSchema(state), ownProps.params.mutationName),
-    mutationResult: getQueryResult(state)
+    mutationResult: getQueryResult(state),
+    schema: getSchema(state)
   };
 }
 

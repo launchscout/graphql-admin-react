@@ -23,6 +23,10 @@ export const findMutationType = (schema, name) => {
   return findType(schema, findMutationField(schema, name).type.name);
 }
 
+export const findInputFields = (schema, inputObjectType) => {
+  return findType(schema, inputObjectType).inputFields;
+}
+
 export const isListQuery = (queryField) => queryField.type.kind === "LIST";
 
 export const findField = (type, name) => type.fields.find(field => field.name == name);
