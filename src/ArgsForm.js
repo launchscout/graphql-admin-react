@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { findInputFields } from './graphql_utils';
+import { findInputFields, findType, findEffectiveType, findEnumValues, isEnum } from './graphql_utils';
 
 class ArgsForm extends Component {
 
@@ -26,10 +26,27 @@ class ArgsForm extends Component {
     }
   }
 
+  renderEnumField(arg, prefix) {
+    const enumValues = findEnumValues(this.props.schema, findEffectiveType(arg.type).name);
+    return (
+      <div>
+        <label>{arg.name}</label>
+        <select name={arg.name} onChange={ (event)=> this.argValueChange(prefix.concat(arg.name) : arg.name, event.target.value)}>
+          { enumValues.map( (enumValue) => (
+              <option>{enumValue.name}</option>
+            ))
+          }
+        </select>
+      </div>
+    );
+  }
+
+
   renderArgField(arg, prefix=[]) {
-    console.log(arg);
     if (arg.type.kind == "INPUT_OBJECT") {
       return this.renderInputObjectFields(arg, prefix);
+    } else if (isEnum(arg)) {
+      return this.renderEnumField(arg, prefix);
     } else {
       return this.renderSimpleArgField(arg, prefix);
     }

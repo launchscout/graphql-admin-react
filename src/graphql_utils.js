@@ -6,7 +6,6 @@ export const findType = (schema, name) => {
 
 export const extractQueries = (schema) => {
   const queryType = findType(schema, schema.queryType.name);
-  console.log(queryType);
   return queryType.fields;
 };
 
@@ -27,7 +26,23 @@ export const findInputFields = (schema, inputObjectType) => {
   return findType(schema, inputObjectType).inputFields;
 }
 
-export const isListQuery = (queryField) => queryField.type.kind === "LIST";
+export const findEffectiveType = (type) => {
+  if (type.kind === "NON_NULL" || type.kind === "LIST") {
+    return findEffectiveType(type.ofType);
+  } else {
+    return type;
+  }
+};
+
+export const isEnum = (arg) => {
+  return arg.type.kind === "NON_NULL" ? arg.type.ofType.kind === "ENUM" : arg.type.kind === "ENUM";
+};
+
+export const findEnumValues = (schema, name) => findType(schema, name).enumValues;
+
+export const isListQuery = (queryField) => {
+  return queryField.type.kind === "LIST" || (queryField.type.ofType && queryField.type.ofType.kind === "LIST");
+};
 
 export const findField = (type, name) => type.fields.find(field => field.name == name);
 
@@ -36,13 +51,9 @@ export const findQueryField = (schema, name) => {
   return queries.find(field => field.name === name);
 };
 
-export const findQueryType = (schema, name) => {
+export const findQueryReturnType = (schema, name) => {
   const queryField = findQueryField(schema, name);
-  if (isListQuery(queryField)) {
-    return findType(schema, queryField.type.ofType.name);
-  } else {
-    return findType(schema, queryField.type.name);
-  }
+  return findType(schema, findEffectiveType(queryField.type).name);
 };
 
 const argsWithValues = (queryArgs, argValues) => {
@@ -63,15 +74,20 @@ const argumentVariables = (queryArgs, argValues = {}) => {
   return argVariables.length >  0  ? `(${argVariables.join(', ')})` : '';
 };
 
-const isScalar = (field) => field.type.kind === "SCALAR";
+const isScalar = (field) => field.type.kind === "SCALAR" || (field.type.ofType && field.type.ofType.kind === "SCALAR");
+
+export const buildQueryFields = (schema, queryName) => {
+  return findQueryReturnType(schema, queryName).fields.filter(isScalar).map(field => field.name).join(", ");
+};
 
 export const buildQuery = (schema, queryName, args) => {
   console.log(schema, queryName, args);
+  console.log(findQueryReturnType(schema, queryName));
   const queryArgs = findQueryField(schema, queryName).args;
   return gql`
   query doIt${declareArgumentVariables(queryArgs, args)} {
     ${queryName}${argumentVariables(queryArgs, args)} {
-      ${findQueryType(schema, queryName).fields.filter(isScalar).map(field => field.name).join(", ")}
+      ${buildQueryFields(schema, queryName)}
     }
   }
   `;

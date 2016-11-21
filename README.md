@@ -17,5 +17,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 npm install
 npm start
 ```
-This assumes you are running your GraphQL server on http://localhost:4000/grapqhl. To
-change this, edit `src/store.js`.
+
+## GraqhCool
+
+I've been using [GraphCool](http://graph.cool) to play around with creating a GraphQL schema to test 
+against. Right now this is configured in src/graphqlCoolClient.js. It's easy enough
+to create GraphCool project and try it out, just change the endpoint.

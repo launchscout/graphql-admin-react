@@ -6,7 +6,7 @@ export const queryExecutedAction = createAction('queryExecuted');
 export const clearQueryResultAction = createAction('clear query result');
 
 export const executeQueryAction = (queryName, args) => {
-  console.log('executing query' + queryName);
+  console.log('executing query', queryName, args);
   return (dispatch, getState, client) => {
     console.log('in thunk');
     const schema = getSchema(getState());

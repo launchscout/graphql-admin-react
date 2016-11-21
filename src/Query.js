@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { findQueryType, findQueryField, isListQuery } from './graphql_utils';
+import { findQueryReturnType, findQueryField, isListQuery } from './graphql_utils';
 import { executeQueryAction } from './actions/executeQuery';
 import { getSchema, getQueryResult } from './reducers';
 import QueryResultsTable from './QueryResultTable';
@@ -15,11 +15,11 @@ const displayQueryResult = (queryField, queryResult) => {
   }
 };
 
-const Query = ({params, queryType, queryField, executeQuery, queryResult}) => {
+const Query = ({params, queryType, queryField, schema, executeQuery, queryResult}) => {
   return (
     <div>
     <h3>{params.queryName}</h3>
-    <QueryArgsForm args={queryField.args} onExecute={executeQuery} buttonLabel="Execute Query"/>
+    <QueryArgsForm schema={schema} args={queryField.args} onExecute={executeQuery} buttonLabel="Execute Query"/>
     { queryResult ? displayQueryResult(queryField, queryResult) : '' }
     </div>
   );
@@ -28,8 +28,9 @@ const Query = ({params, queryType, queryField, executeQuery, queryResult}) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     queryField: findQueryField(getSchema(state), ownProps.params.queryName),
-    queryType: findQueryType(getSchema(state), ownProps.params.queryName),
-    queryResult: getQueryResult(state)
+    queryType: findQueryReturnType(getSchema(state), ownProps.params.queryName),
+    queryResult: getQueryResult(state),
+    schema: getSchema(state)
   };
 }
 

@@ -4,9 +4,7 @@ import { graphql } from './reducers';
 import thunk from 'redux-thunk';
 import { combineReducers, applyMiddleware } from 'redux';
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
-});
+import client from './graphCoolClient';
 
 const store = createStore(
   combineReducers({
