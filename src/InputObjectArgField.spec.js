@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import InputObjectArgField from './InputObjectArgField';
-import SimpleArgField from './SimpleArgField';
+import ArgField from './ArgField';
 
 const inputObjectArg = {
   name: "Foo",
@@ -34,5 +34,5 @@ const schema = {
 
 it('renders input objects', () => {
   const wrapper = shallow(<InputObjectArgField arg={inputObjectArg} schema={schema} />);
-  expect(wrapper.find(SimpleArgField).length).toEqual(2);
+  expect(wrapper.find(ArgField).length).toEqual(2);
 });

@@ -4,26 +4,26 @@ import SimpleArgField from './SimpleArgField';
 import InputObjectArgField from './InputObjectArgField';
 import EnumArgField from './EnumArgField';
 
-const ArgField = ({ arg, schema, onChange, prefix }) => {
+const ArgField = ({ arg, schema, argValueChange, prefix=[] }) => {
   if (arg.type.kind == "INPUT_OBJECT") {
     return (
       <InputObjectArgField
         prefix={prefix}
         schema={schema}
         arg={arg}
-        onChange={onChange}
+        argValueChange={argValueChange}
       />
     );
   } else if (isEnum(arg)) {
     return (
-      <EnumArgField arg={arg} onChange={onChange} schema={schema} />
+      <EnumArgField arg={arg} argValueChange={argValueChange} prefix={prefix} schema={schema} />
     );
   } else {
     return (
     <SimpleArgField
       prefix={prefix}
       arg={arg}
-      onChange={onChange}
+      argValueChange={argValueChange}
     />
     );
 

@@ -73,7 +73,7 @@ class ArgsForm extends Component {
           <ArgField
             arg={arg}
             schema={this.props.schema}
-            onChange={ (event)=> this.argValueChange(arg.name, event.target.value) }
+            argValueChange={ (name, value)=> this.argValueChange(name, value) }
           />
         ))}
         <input type="button" value={this.props.buttonLabel} onClick={ () => this.props.onExecute(this.state.argValues)  } />

@@ -1,12 +1,12 @@
 import React from 'react';
 import { findInputFields } from './graphql_utils';
-import SimpleArgField from './SimpleArgField';
+import ArgField from './ArgField';
 
-const InputObjectArgField = ({arg, onChange, prefix=[], schema}) => (
+const InputObjectArgField = ({arg, argValueChange, prefix=[], schema}) => (
   <fieldset>
   { findInputFields(schema, arg.type.name)
     .map( (inputField, index) => (
-      <SimpleArgField key={index} arg={inputField} prefix={prefix.concat(arg.name)} onChange={onChange} />
+      <ArgField key={index} arg={inputField} prefix={prefix.concat(arg.name)} argValueChange={argValueChange} />
     ))
   }
   </fieldset>
