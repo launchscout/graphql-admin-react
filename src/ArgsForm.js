@@ -28,44 +28,6 @@ class ArgsForm extends Component {
     }
   }
 
-  renderEnumField(arg, prefix) {
-    const enumValues = findEnumValues(this.props.schema, findEffectiveType(arg.type).name);
-    return (
-      <div>
-        <label>{arg.name}</label>
-        <select name={arg.name} onChange={ (event)=> this.argValueChange(prefix.concat(arg.name) : arg.name, event.target.value)}>
-          { enumValues.map( (enumValue) => (
-              <option>{enumValue.name}</option>
-            ))
-          }
-        </select>
-      </div>
-    );
-  }
-
-
-  renderArgField(arg, prefix=[]) {
-    if (arg.type.kind == "INPUT_OBJECT") {
-      return this.renderInputObjectFields(arg, prefix);
-    } else if (isEnum(arg)) {
-      return this.renderEnumField(arg, prefix);
-    } else {
-      return (
-      <SimpleArgField
-        prefix={prefix}
-        arg={arg}
-        onChange={(event)=> this.argValueChange(prefix.concat(arg.name) : arg.name, event.target.value)}
-      />
-      );
-
-    }
-  }
-
-  renderInputObjectFields(arg, prefix=[]) {
-    return findInputFields(this.props.schema, arg.type.name)
-      .map( simpleField => this.renderArgField(simpleField, prefix.concat(arg.name)));
-  }
-
   render() {
     return (
       <form>
