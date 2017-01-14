@@ -1,42 +1,38 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import logo from './logo.svg';
-import './App.css';
+import { Router, Route, hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchSchemaAction } from './actions/fetchSchema';
-import { extractQueries, findMutations } from './graphql_utils';
 import { getSchema } from './reducers';
+import Query from './Query';
+import Mutation from './Mutation';
+import Home from './Home';
 
 class App extends Component {
 
   componentDidMount() {
+    console.log("mounting");
     this.props.fetchSchema();
   }
+
   render() {
-    return (
-      <div className="App">
-        Queries
-        <ul>
-        { this.props.queries.map( (query) => (
-          <li><Link to={`/query/${query.name}`}>{query.name}</Link></li>
-        ))}
-        </ul>
-        Mutations
-        <ul>
-        { this.props.mutations.map( (mutation) => (
-          <li><Link to={`/mutation/${mutation.name}`}>{mutation.name}</Link></li>
-        ))}
-        </ul>
-      </div>
-    );
+    if (this.props.schemaLoaded) {
+      return (
+        <Router history={hashHistory}>
+          <Route path="/" component={Home}/>
+          <Route path="/query/:queryName" component={Query} />
+          <Route path="/mutation/:mutationName" component={Mutation} />
+        </Router>
+      );
+    } else {
+      return (<div>Loading schema...</div>);
+    }
   }
 }
 
 const mapStateToProps = (state) => {
   const schema = getSchema(state);
   return {
-    queries: schema ? extractQueries(schema) : [],
-    mutations: schema ? findMutations(schema) : []
+    schemaLoaded: !!schema
   }
 };
 
@@ -49,3 +45,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// export default App;
