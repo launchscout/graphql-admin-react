@@ -1,7 +1,10 @@
 import React from 'react';
+import { findEffectiveType } from './graphql_utils';
 
 const typeConvert = (arg, value) => {
-  console.log(arg);
+  if (findEffectiveType(arg.type).name === "Int") {
+    return parseInt(value);
+  }
   return value;
 };
 
