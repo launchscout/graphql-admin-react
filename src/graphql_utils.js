@@ -81,8 +81,8 @@ export const buildQueryFields = (schema, queryName) => {
 };
 
 export const buildQuery = (schema, queryName, args) => {
-  console.log(schema, queryName, args);
-  console.log(findQueryReturnType(schema, queryName));
+  // console.log(schema, queryName, args);
+  // console.log(findQueryReturnType(schema, queryName));
   const queryArgs = findQueryField(schema, queryName).args;
   return gql`
   query doIt${declareArgumentVariables(queryArgs, args)} {

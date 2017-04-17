@@ -3,6 +3,7 @@ import { getSchema } from '../reducers';
 import { buildQuery, buildMutation } from '../graphql_utils';
 
 export const queryExecutedAction = createAction('queryExecuted');
+export const queryErroredAction = createAction('queryError');
 export const clearQueryResultAction = createAction('clear query result');
 
 export const executeQueryAction = (queryName, args) => {
@@ -16,6 +17,8 @@ export const executeQueryAction = (queryName, args) => {
     }).then((result) => {
       console.log(result);
       dispatch(queryExecutedAction(result.data[queryName]));
+    }, (error) => {
+      dispatch(queryErroredAction(error));
     });
   };
 };
