@@ -17,7 +17,8 @@ export const executeQueryAction = (queryName, args) => {
     }).then((result) => {
       console.log(result);
       dispatch(queryExecutedAction(result.data[queryName]));
-    }, (error) => {
+    }, (error, stuff) => {
+      // console.log(arguments);
       dispatch(queryErroredAction(error));
     });
   };

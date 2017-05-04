@@ -14,4 +14,6 @@ const store = createStore(
   applyMiddleware(client.middleware(), thunk.withExtraArgument(client))
 );
 
+console.log("store created");
+
 export default store;
