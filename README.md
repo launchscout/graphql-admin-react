@@ -18,7 +18,7 @@ npm install
 npm start
 ```
 
-## GraqhCool
+## GraphCool
 
 I've been using [GraphCool](http://graph.cool) to play around with creating a GraphQL schema to test 
 against. Right now this is configured in src/graphqlCoolClient.js. It's easy enough
